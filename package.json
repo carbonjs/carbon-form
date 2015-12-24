@@ -1,0 +1,38 @@
+{
+  "name": "carbon-form",
+  "version": "0.1.0",
+  "description": "Provides Zend-like forms in Node.js",
+  "author": {
+    "name": "Amir Ahmetovic",
+    "email": "chox.nox@gmail.com"
+  },
+  "keywords": [
+    "form",
+    "forms",
+    "zend"
+  ],
+  "licence": "MIT",
+  "homepage": "https://github.com/choxnox/carbon-form",
+  "main": "./index.js",
+  "bugs": {
+    "url": "https://github.com/choxnox/carbon-form/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/choxnox/carbon-form.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "async": "*",
+    "async-rollback": "*",
+    "carbon-validate": "^0.1.0",
+    "entities": "^1.1.1",
+    "extend": "*",
+    "jade": "^1.11.0",
+    "lodash": "^3.10.1",
+    "request": "^2.60.0"
+  },
+  "readme": "ERROR: No README data found!"
+}
