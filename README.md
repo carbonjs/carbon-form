@@ -1,5 +1,5 @@
 # carbon-form
-The `carbon-form` module provides Zend-like forms in your projects. It is a complete solution which not only provides rendering but filtering and validation too. It packs all the logic behind HTML forms and it abstracts a lot of work so that you can focus on building awesome web applications.
+The `carbon-form` module provides Zend-like forms in your projects. It is a complete solution which not only provides rendering but filtering and validation too. It packs all the logic behind HTML forms and it abstracts a lot of work so that you can focus on building awesome web applications and best of all it allows you to define the layout and style your forms any way you want them.
 
 If you have ever used `Zend_Form` before you're going to be familiar with the syntax and if not just keep reading.
 
@@ -12,6 +12,8 @@ npm install carbon-form [--save]
 The usage is pretty simple. You create a form and then add elements to it. For each element you define a set of options such as name, label, filters, validators, HTML attributes etc. The following example should present most of `carbon-form` features.
 
 #### Defining the form (file: `signup-form.js`)
+First you need to define your form and elements that it will contain.
+
 ```js
 var Form = require("carbon-form");
 var Filter = require("carbon-filter");
@@ -122,6 +124,8 @@ module.exports = exports = function(options) {
 ```
 
 #### Defining form layout (file: `signup-form.jade`)
+Since `carbon-form` gives you freedom to style your own forms any way you wish, you can define form layout in the separate file and then tell to `carbon-form` where to look for this file. When the form renders it will use this layout as a template.
+
 ```Jade
 .form-group
 	div
@@ -153,6 +157,8 @@ module.exports = exports = function(options) {
 ```
 
 #### Validation and rendering (using `carbon-framework`)
+This example features `carbon-framework` just to make it easier for you to understand how `carbon-form` works in reality. Of course you can use `carbon-form` with any other Node.js framework or no framework at all.
+
 ```js
 module.exports = function() {
 	return {
