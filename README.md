@@ -130,25 +130,25 @@ Since `carbon-form` gives you freedom to style your own forms any way you wish, 
 .form-group
 	div
 		label(for="#{elements.name.getName()}")
-		!= elements.name.getLabel()
+			!= elements.name.getLabel()
 	div
 		!= elements.name.render()  
 .form-group
 	div
 		label(for="#{elements.email_address.getName()}")
-		!= elements.email_address.getLabel()
+			!= elements.email_address.getLabel()
 	div
 		!= elements.email_address.render()  
 .form-group
 	div
 		label(for="#{elements.password1.getName()}")
-		!= elements.password1.getLabel()
+			!= elements.password1.getLabel()
 	div
 		!= elements.password1.render()  
 .form-group
 	div
 		label(for="#{elements.password2.getName()}")
-		!= elements.password2.getLabel()
+			!= elements.password2.getLabel()
 	div
 		!= elements.password2.render()  
 .form-group
