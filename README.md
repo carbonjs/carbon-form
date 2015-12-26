@@ -128,8 +128,9 @@ module.exports = function() {
                     if (err)
                     {
                         form.render(function(err) {
-                            // Now in the view all you have to do is call `!= form.render()` (if you're using Jade engine)
-                            // and it will return rendered form in HTML all together with errors
+                            // Now in the view all you have to do is call `!= form.render()`
+                            // (if you're using Jade engine) and it will return rendered form 
+                            // as HTML all together with all errored fields
                             
                             res.render("scripts/signup", {
                                 formSignup: form
