@@ -17,10 +17,11 @@ var Form = require("carbon-form");
 var Filter = require("carbon-filter");
 var Validate = require("carbon-validate");
 
-module.exports = exports = function() {
-    var form = new Form({
-        action: "/signup"
-    });
+module.exports = exports = function(options) {
+    var form = new Form(options);
+    
+    form.setAction("/signup");
+    form.setViewScriptFile("forms/signup.jade");
     
     form.addElements([
         new Form.Element.Text("name", {
@@ -116,14 +117,16 @@ module.exports = exports = function() {
 
 #### Validation and rendering (using `carbon-framework`)
 ```js
-var form = require("./forms/signup-form");
-
 module.exports = function() {
 	return {
 		signupAction: {
             post: function(req, res) {
                 var postData = req.body;
-                
+
+                var form = require("./forms/signup-form")({
+                    viewiewScriptPaths: res.viewPaths
+                });
+
                 form.isValid(postData, function(err, values) {
                     if (err)
                     {
