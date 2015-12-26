@@ -11,7 +11,7 @@ npm install carbon-form [--save]
 ## Usage
 The usage is pretty simple. You create a form and then add elements to it. For each element you define a set of options such as name, label, filters, validators, HTML attributes etc. The following example should present most of `carbon-form` features.
 
-#### Defining the form (for example in the separate file: `signup-form.js`)
+#### Defining the form (file: `signup-form.js`)
 ```js
 var Form = require("carbon-form");
 var Filter = require("carbon-filter");
@@ -107,12 +107,49 @@ module.exports = exports = function(options) {
                     }
                 })
             ]
+        }),
+        new Form.Element.Button("submit", {
+            content: "Sign up",
+            attribs: {
+                class: "btn btn-red",
+                type: "submit"
+            }
         })
     ]);
 
     return form;
 }
+```
 
+#### Defining form layout (file: `signup-form.jade`)
+```Jade
+.form-group
+	div
+		label(for="#{elements.name.getName()}")
+		!= elements.name.getLabel()
+	div
+		!= elements.name.render()  
+.form-group
+	div
+		label(for="#{elements.email_address.getName()}")
+		!= elements.email_address.getLabel()
+	div
+		!= elements.email_address.render()  
+.form-group
+	div
+		label(for="#{elements.password1.getName()}")
+		!= elements.password1.getLabel()
+	div
+		!= elements.password1.render()  
+.form-group
+	div
+		label(for="#{elements.password2.getName()}")
+		!= elements.password2.getLabel()
+	div
+		!= elements.password2.render()  
+.form-group
+	div
+		!= elements.submit.render()    
 ```
 
 #### Validation and rendering (using `carbon-framework`)
