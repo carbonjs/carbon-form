@@ -1,6 +1,6 @@
 {
   "name": "carbon-form",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Provides Zend-like forms in Node.js",
   "author": {
     "name": "Amir Ahmetovic",
@@ -33,6 +33,5 @@
     "jade": "^1.11.0",
     "lodash": "^3.10.1",
     "request": "^2.60.0"
-  },
-  "readme": "ERROR: No README data found!"
+  }
 }
