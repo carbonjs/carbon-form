@@ -202,8 +202,20 @@ module.exports = function() {
 ## Elements
 The `carbon-form` currently supports 6 HTML form elements (`Button`, `Checkbox`, `Hidden`, `Password`, `Text`, `Textarea`) and 4 extended elements (`EmailAddress`, `Link`, `Recaptcha`, `Switch`).
 
+## Subforms
+Depending on how you organize your forms you can nest one or more forms within a single form.
+
+```js
+var Form = require("carbon-form");
+
+var form = new Form();
+var buttons = new Form();
+
+parentForm.addSubForm("buttons", buttons);
+```
+
 ## Who is using it
-The `carbon-validate` module is one of many that is running behind our web application: [Timelinity](https://www.timelinity.com)
+The `carbon-form` is one of many that is running behind our web application: [Timelinity](https://www.timelinity.com)
 
 ## Contributing
 If you're willing to contribute to this project feel free to report issues, send pull request, write tests or simply contact me - [Amir Ahmetovic](https://github.com/choxnox)
