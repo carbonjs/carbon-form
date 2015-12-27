@@ -1,4 +1,4 @@
-# carbon-form
+# CarbonJS Forms / `carbon-form`
 The `carbon-form` module provides Zend-like forms in your projects. It is a complete solution which not only provides rendering but filtering and validation too. It packs all the logic behind HTML forms and it abstracts a lot of work so that you can focus on building awesome web applications and best of all it allows you to define the layout and style your forms any way you want them.
 
 If you have ever used `Zend_Form` before you're going to be familiar with the syntax and if not just keep reading.
