@@ -1,6 +1,6 @@
 {
   "name": "carbon-form",
-  "version": "0.1.4",
+  "version": "0.1.18",
   "description": "Provides Zend-like forms in Node.js",
   "homepage": "http://www.carbonjs.com/",
   "author": {
