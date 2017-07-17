@@ -1,8 +1,8 @@
 {
   "name": "carbon-form",
-  "version": "0.1.19",
+  "version": "0.1.24",
   "description": "Provides Zend-like forms in Node.js",
-  "homepage": "http://www.carbonjs.com/",
+  "homepage": "https://github.com/carbonjs/carbon-form",
   "author": {
     "name": "Amir Ahmetovic",
     "email": "chox.nox@gmail.com"
@@ -13,7 +13,6 @@
     "zend"
   ],
   "licence": "MIT",
-  "homepage": "https://github.com/carbonjs/carbon-form",
   "main": "./index.js",
   "bugs": {
     "url": "https://github.com/carbonjs/carbon-form/issues"
@@ -28,11 +27,11 @@
   "dependencies": {
     "async": "*",
     "async-rollback": "*",
-    "carbon-validate": "^0.1.0",
+    "carbon-validate": "latest",
     "entities": "^1.1.1",
     "extend": "*",
     "jade": "^1.11.0",
-    "lodash": "^3.10.1",
+    "lodash": "latest",
     "request": "^2.60.0"
   }
 }
