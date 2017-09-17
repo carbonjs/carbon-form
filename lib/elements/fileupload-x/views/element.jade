@@ -1,0 +1,324 @@
+div.file-uploader(id="#{element.getId()}")
+  div.input-group
+    ul.form-control.no-file
+    span.input-group-btn
+      span.btn.btn-blue.fileinput-button
+        - if (element.getOptions().button.icon) {
+          i(class="#{element.getOptions().button.icon}")
+        - }
+        - if (element.getOptions().button.text) {
+          span #{element.getOptions().button.text}
+        - }
+        input(type="file", id="#{element.getId()}-file", name="#{element.getName()}-file")
+
+script(type="text/javascript").
+    var initFileUpload_#{element.getId()} = function() {
+        var container = $("##{element.getId()}");
+        var element = $("##{element.getId()}-file");
+        var button = container.find(".fileinput-button");
+        var formControl = container.find(".form-control");
+
+        var fileUploader = {
+            maxFiles: #{element.getOptions().maxFiles},
+            files: [],
+            filesUploading: 0,
+            removeFile: function(options) {
+                defaults = {
+                    index: null
+                };
+  
+                fileUploader.filesCount--;
+                var nonce = formControl.find(".media").eq(options.index).data("id");     
+            
+                if (nonce)
+                {
+                    var file = _.findWhere(fileUploader.files, {nonce: nonce.toString()});
+    
+                    if (file && file.jqXHR)
+                        file.jqXHR.abort();
+                }
+    
+                formControl.find(".media").eq(options.index).remove();
+    
+                if (formControl.find(".media").length < fileUploader.maxFiles)
+                    formControl.find(".fileinput-button").removeClass("disabled");
+    
+                if (fileUploader.maxFiles > 1 && element.find("li.media").length > 1)
+                    formControl.sortable("enable");
+                else if (fileUploader.maxFiles > 1)
+                    formControl.sortable("disable");				
+    
+                if (!formControl.find("li.media").length)
+                {
+                    fileUploader.resetField({
+                        files: []
+                    });
+                }
+            },
+            resetField: function(options) {
+                var defaults = {
+                    files: null
+                };
+                
+                if (options.files && options.files.length)
+                {
+                    $.each(options.files, function (index, file) {
+                        fileUploader.updateFile({
+                            file: file
+                        });   
+                    });
+
+                    formControl.removeClass("no-file");
+                }
+                else
+                {
+                    formControl.empty().addClass("no-file");
+                    formControl.html("<span>#{element.getOptions().noFile.text}</span>");
+                    
+                    element.find(".fileinput-button").removeClass("disabled");
+                }
+                
+                if (fileUploader.maxFiles > 1 && !formControl.hasClass("no-file"))
+                    formControl.sortable("enable");
+                else if (fileUploader.maxFiles > 1)
+                    formControl.sortable("disable");
+            },
+            updateFile: function(options) {
+                var defaults = {
+                    file: {
+                        name: null
+                    }					
+                };
+                
+                if (fileUploader.maxFiles == 1)
+                {
+                    var fileItem = formControl.find("li.media");
+
+                    if (fileItem.length && fileItem.find(".alert").length)
+                        fileItem.empty();
+
+                    if (!fileItem.length)
+                    {
+                        fileUploader.files.push(options.file);
+                        fileItem = $("<li class='media'>").appendTo(formControl);
+                        $("<div class='media-left'>").appendTo(fileItem);
+                    }
+                    
+                    fileItem.attr("data-id", options.file.nonce);
+                }
+                else
+                {
+                    fileItem = formControl.find("li.media[data-id='" + options.file.nonce + "']");
+
+                    if (!fileItem.length)
+                    {
+                        fileUploader.files.push(options.file);
+                        fileItem = $("<li class='media'>").attr("data-id", options.file.nonce).appendTo(formControl);
+                        $("<div class='media-left'>").appendTo(fileItem);
+
+                        if (fileUploader.files.length > 1)
+                            formControl.sortable("enable");
+                        else
+                            formControl.sortable("disable");						
+                    }
+
+                    if (element.find("li.media").length >= fileUploader.maxFiles)
+                        element.find(".fileinput-button").addClass("disabled");
+                }
+
+                var fileItemLeft = fileItem.find(".media-left");
+    
+                if (!fileItemLeft.length)
+                    fileItemLeft = $("<div>").addClass("media-left").appendTo(fileItem);
+
+                var image = fileItem.find(".image-preview");
+    
+                if (!image.length)
+                {
+                    fileItem.children(".media-left").empty();
+    
+                    image = $("<div>").addClass("image-preview").appendTo(fileItemLeft);
+    
+                    //$("<i>").addClass("icon icon-4x").addClass(fileUploader.icons.noFile).appendTo(image);
+                    image.append("<div class='progress progress-striped active' data-percent='0%'><div class='progress-bar' style='width:0%'></div></div>");
+                }
+    
+                var fileItemBody = fileItem.find(".media-body");
+    
+                if (!fileItemBody.length)
+                    fileItemBody = $("<div>").addClass("media-body").appendTo(fileItem);
+
+                var buttonRemove = fileItem.find("button.file-remove");
+    
+                if (!buttonRemove.length)
+                    buttonRemove = $("<button class='btn btn-red btn-xs btn-square pull-right file-remove' type='button'>").html("×<i class='icon icon-fw icon-close-alt'></i>").appendTo(fileItemBody);
+    
+                var inputField = fileItem.find("input");
+    
+                if (!inputField.length)
+                    inputField = $("<input>").addClass("file-link").attr("name", "#{element.getFullyQualifiedName(true)}[]").attr("type", "hidden").appendTo(fileItem);
+    
+                if (options.file.id)
+                    inputField.val(options.file.id);
+    
+                if (options.file.previewUrl)
+                {
+                    var imagePreview = fileItem.find(".image-preview");
+                    var thumbnailPhoto = fileItem.children("img");
+    
+                    thumbnailPhoto = $("<img class='media-object'>")
+                        .load(function() {
+                            imagePreview.replaceWith(thumbnailPhoto);
+                        })
+                        .attr("src", options.file.previewUrl)
+                    ;
+                }
+            }
+        };
+        
+        if (fileUploader.maxFiles > 1)
+        {
+            element.attr("multiple", "multiple");
+        
+            formControl.sortable({
+                opacity: 0.8,
+                revert: true,
+                forceHelperSize: true,
+                placeholder: "draggable-placeholder",
+                forcePlaceholderSize: true,
+                tolerance: "pointer",
+                stop: function( event, ui ) {
+                    //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+                    $(ui.item).css('z-index', 'auto');
+                }
+            });
+        }		
+                            
+        fileUploader.resetField({
+            files: !{JSON.stringify(data.files)}
+        });
+        
+        element.fileupload({
+            url: "#{element.getUploadEndpoint()}",
+            add: function(event, data) {
+                if (fileUploader.maxFiles > 1 && fileUploader.files.length >= fileUploader.maxFiles)
+                    return false;
+                              
+                if (data.files.length)
+                {
+                    if (!container.find("li.media").length)
+                        formControl.empty().removeClass("no-file");                
+                
+                    $.each(data.files, function(index, file) {
+                        var nonce = container.find("li.media").length + "" + new Date().getTime();
+                        file.nonce = nonce;
+                        
+                        data.formData = {
+                            "fileUpload[mediaType]": "#{element.getOptions().mediaType}",
+                            "fileUpload[mediaSubtype]": "#{element.getOptions().mediaSubtype}",
+                            "fileUpload[nonce]": nonce
+                        };
+                        
+                        fileUploader.updateFile({
+                            file: file
+                        });
+                    });
+                    
+                    var jqXHR = data.submit();
+                    
+                    fileUploader.files[fileUploader.files.length - 1].jqXHR = jqXHR;
+                }
+            },
+            always: function(event, data) {
+            	  var state = button.data("state");
+                
+                fileUploader.filesUploading--;
+
+                if (fileUploader.filesUploading === 0)
+                {
+                    button.empty();
+                    $(state.loadingState).appendTo(button);
+                    button.width("");
+                }
+            },
+            done: function(event, data) {
+                if (data.result)
+                {
+                    if (data.result.files && data.result.files.length)
+                    {
+                        $.each(data.result.files, function(index, file) {
+                            file.index = index;
+                            
+                            fileUploader.updateFile({
+                                file: file
+                            });
+                            
+                            var fileItem = container.find(".media[data-id='" + file.nonce + "']");
+                						fileItem.removeClass("has-error");
+                
+                            container.trigger({
+                                type: "file.done.fileupload",
+                                file: file
+                            });
+                        });
+                        
+                        container.trigger("done.fileupload");
+                    }
+                    else if (data.result.error)
+                    {
+                        var fileItem = container.find(".media[data-id='" + data.result.nonce + "']");
+                        fileItem.addClass("has-error");
+              
+                        var errorBox = $("<div>").addClass("alert alert-red").appendTo(fileItem.find(".media-body"));
+                        //var errorSign = $("<strong>").text("<?= $this->data['settings']['textError']; ?>").appendTo(errorBox);
+                        var errorMessage = $("<span>").text(data.result.error.message).appendTo(errorBox);
+
+                        fileItem.find(".image-preview :not(.icon)").remove();
+                    }
+                }
+            },
+            progress: function(event, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);  
+                var nonce = data.formData["fileUpload[nonce]"];
+                var file = container.find("li.media[data-id='" + nonce + "']");
+
+                file.find(".progress").attr("data-percent", progress + "%").children(".progress-bar").css("width", progress + "%");
+            },
+            submit: function(event, data) {
+                var state = button.data("state");
+
+                state = _.isUndefined(state) ? {} : state;
+                fileUploader.filesUploading++;
+                            
+                if (fileUploader.filesUploading == 1)
+                {
+                    state.buttonWidth = button.width();
+                    state.loadingState = button.children().detach();
+                    $("<i>").addClass("icon icon-gear-alt icon-spin").appendTo(button);
+                    button.width(state.buttonWidth);
+                }
+
+                button.data("state", state);
+            }
+        });
+        
+        container.resize(function() {
+        		var inputGroupBtn = container.find(".input-group > .input-group-btn");
+        		inputGroupBtn.width(inputGroupBtn.children().outerWidth());
+        
+        		formControl.outerWidth(container.outerWidth() - inputGroupBtn.outerWidth(), true);
+      	});
+        
+        $(document).on("click", "##{element.getId()} .file-remove", function() {
+              fileUploader.removeFile({
+                  index: $(this).index("##{element.getId()} .file-remove")
+              });
+          });
+    }
+    
+    if ($("#modal-container").length)
+    {
+        console.log("TO-DO: Implement FileUpload for modals");
+    }
+    else
+        initFileUpload_#{element.getId()}();
