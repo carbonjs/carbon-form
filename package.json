@@ -1,6 +1,6 @@
 {
   "name": "carbon-form",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Forms to be used with the CarbonJS Framework or standalone",
   "homepage": "https://github.com/carbonjs/carbon-form",
   "author": {
@@ -25,19 +25,19 @@
     "test": "mocha"
   },
   "dependencies": {
-    "async": "*",
-    "async-rollback": "*",
+    "async": "^2.5.0",
     "bytes": "^2.5.0",
-    "carbon-filter": "^0.1.13",
-    "carbon-validate": "^0.1.12",
     "entities": "^1.1.1",
-    "extend": "*",
     "fs-extra": "^4.0.1",
     "gm": "^1.23.0",
     "jade": "^1.11.0",
     "lodash": "^4.17.4",
     "mmmagic": "^0.4.5",
     "request": "^2.60.0"
+  },
+  "peerDependecies": {
+    "carbon-filter": "^1.0.1",
+    "carbon-validate": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.0",
