@@ -21,10 +21,10 @@ var Validate = require("carbon-validate");
 
 module.exports = exports = function(options) {
     var form = new Form(options);
-    
+
     form.setAction("/signup");
     form.setViewScriptFile("forms/signup.jade");
-    
+
     form.addElements([
         new Form.Element.Text("name", {
             label: "Name",
@@ -175,9 +175,9 @@ module.exports = function() {
                     {
                         form.render(function(err) {
                             // Now in the view all you have to do is call `!= form.render()`
-                            // (if you're using Jade engine) and it will return rendered form 
+                            // (if you're using Jade engine) and it will return rendered form
                             // as HTML all together with all errored fields
-                            
+
                             res.render("scripts/signup", {
                                 formSignup: form
                             });
@@ -185,14 +185,14 @@ module.exports = function() {
                     }
                     else
                     {
-                        // Form validation is successful and argument `values` now contains all 
-                        // field values which are filtered and validated and therefor safe 
+                        // Form validation is successful and argument `values` now contains all
+                        // field values which are filtered and validated and therefor safe
                         // to be inserted into the database
-                        
+
                         res.redirect("/signup-success");
                     }
                 });
-                
+
             }
 		}
 	}
@@ -214,8 +214,10 @@ var buttons = new Form();
 parentForm.addSubForm("buttons", buttons);
 ```
 
-## Who is using it <a id="who-is-using-it"></a>
-The `carbon-form` is one of many that is running behind our web application: [Timelinity](https://www.timelinity.com)
-
 ## Contributing <a id="contributing"></a>
 If you're willing to contribute to this project feel free to report issues, send pull request, write tests or simply contact me - [Amir Ahmetovic](https://github.com/choxnox)
+
+## Licence
+This software is available under the following licenses:
+
+  * MIT
