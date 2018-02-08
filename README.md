@@ -128,32 +128,32 @@ Since `carbon-form` gives you freedom to style your own forms any way you wish, 
 
 ```Jade
 .form-group
-	div
-		label(for="#{elements.name.getName()}")
-			!= elements.name.getLabel()
-	div
-		!= elements.name.render()  
+    div
+        label(for="#{elements.name.getName()}")
+            != elements.name.getLabel()
+    div
+        != elements.name.render()  
 .form-group
-	div
-		label(for="#{elements.email_address.getName()}")
-			!= elements.email_address.getLabel()
-	div
-		!= elements.email_address.render()  
+    div
+        label(for="#{elements.email_address.getName()}")
+            != elements.email_address.getLabel()
+    div
+        != elements.email_address.render()  
 .form-group
-	div
-		label(for="#{elements.password1.getName()}")
-			!= elements.password1.getLabel()
-	div
-		!= elements.password1.render()  
+    div
+        label(for="#{elements.password1.getName()}")
+            != elements.password1.getLabel()
+    div
+        != elements.password1.render()  
 .form-group
-	div
-		label(for="#{elements.password2.getName()}")
-			!= elements.password2.getLabel()
-	div
-		!= elements.password2.render()  
+    div
+        label(for="#{elements.password2.getName()}")
+            != elements.password2.getLabel()
+    div
+        != elements.password2.render()  
 .form-group
-	div
-		!= elements.submit.render()    
+    div
+        != elements.submit.render()    
 ```
 
 #### Validation and rendering (using `carbon-framework`) <a id="validation-and-rendering"></a>
@@ -161,8 +161,8 @@ This example features `carbon-framework` just to make it easier for you to under
 
 ```js
 module.exports = function() {
-	return {
-		signupAction: {
+    return {
+    	signupAction: {
             post: function(req, res) {
                 var postData = req.body;
 
@@ -194,8 +194,8 @@ module.exports = function() {
                 });
 
             }
-		}
-	}
+    	}
+    }
 }
 ```
 
