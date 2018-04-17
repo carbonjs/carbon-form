@@ -1,4 +1,4 @@
-div.file-uploader(id="#{element.getId()}")
+div.file-uploader(id="#{element.getId()}", data-name="#{element.getName()}")
   div.input-group
     ul.form-control.no-file
     span.input-group-btn
@@ -59,20 +59,26 @@ script(type="text/javascript").
                 var defaults = {
                     files: null
                 };
-                
+            
+                this.files = [];
+                formControl.empty();
+            
                 if (options.files && options.files.length)
                 {
-                    $.each(options.files, function (index, file) {
+                    var maxFiles = options.files.length > fileUploader.maxFiles ? fileUploader.maxFiles : options.files.length;
+                
+                    for (var index = 0; index < maxFiles; index++)
+                    {
                         fileUploader.updateFile({
-                            file: file
-                        });   
-                    });
+                            file: options.files[index]
+                        });
+                    }
 
                     formControl.removeClass("no-file");
                 }
                 else
                 {
-                    formControl.empty().addClass("no-file");
+                    formControl.addClass("no-file");
                     formControl.html("<span>#{element.getOptions().noFile.text}</span>");
                     
                     element.find(".fileinput-button").removeClass("disabled");
@@ -176,28 +182,59 @@ script(type="text/javascript").
             }
         };
         
+        container.prop("fileUploader", fileUploader);
+      
         if (fileUploader.maxFiles > 1)
-        {
             element.attr("multiple", "multiple");
         
-            formControl.sortable({
-                opacity: 0.8,
-                revert: true,
-                forceHelperSize: true,
-                placeholder: "draggable-placeholder",
-                forcePlaceholderSize: true,
-                tolerance: "pointer",
-                stop: function( event, ui ) {
-                    //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
-                    $(ui.item).css('z-index', 'auto');
-                }
-            });
-        }		
+        formControl.sortable({
+            helper: "clone",
+            opacity: 0.8,
+            revert: true,
+            forceHelperSize: true,
+            placeholder: "draggable-placeholder",
+            forcePlaceholderSize: true,
+            connectWith: ".file-uploader .ui-sortable",
+            tolerance: "pointer",
+            start: function(event, ui) {
+                ui.item.data("startIndex", ui.item.index());
+            },
+            receive: function(event, ui) {
+                var sourceFileUploader = ui.sender.parents(".file-uploader").prop("fileUploader");
+                var targetFileUploader = $(event.target).parents(".file-uploader").prop("fileUploader");
+                  
+                var newIndex = ui.item.index();
+                var oldIndex = ui.item.data("startIndex");
+                
+                var sourceFiles = JSON.parse(JSON.stringify(sourceFileUploader.files));
+                var targetFiles = JSON.parse(JSON.stringify(targetFileUploader.files));
+                
+                var filesBeingMoved = sourceFiles.splice(oldIndex, 1);
+                
+                if (filesBeingMoved.length)
+                    targetFiles.splice(newIndex, 0, filesBeingMoved[0]);
+
+                sourceFileUploader.resetField({
+                    files: sourceFiles
+                });
+                
+                targetFileUploader.resetField({
+                    files: targetFiles
+                });
+                
+                console.log("sourceFiles count:", sourceFiles.length);
+                console.log("targetFiles count:", targetFiles.length);
+            },
+            stop: function( event, ui ) {
+                //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+                $(ui.item).css('z-index', 'auto');
+            }
+        });
                             
         fileUploader.resetField({
             files: !{JSON.stringify(data.files)}
         });
-        
+    
         element.fileupload({
             url: "#{element.getUploadEndpoint()}",
             add: function(event, data) {
@@ -218,7 +255,7 @@ script(type="text/javascript").
                             "fileUpload[mediaSubtype]": "#{element.getOptions().mediaSubtype}",
                             "fileUpload[nonce]": nonce
                         };
-                        
+                        console.log(file);
                         fileUploader.updateFile({
                             file: file
                         });
