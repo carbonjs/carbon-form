@@ -1,15 +1,21 @@
+//-
+  @Date:   2018-04-17T15:31:01+02:00
+  @Last modified time: 2018-05-14T13:46:31+02:00
+
+
+
 div.file-uploader(id="#{element.getId()}", data-name="#{element.getName()}")
-  div.input-group
-    ul.form-control.no-file
-    span.input-group-btn
-      span.btn.btn-blue.fileinput-button
-        - if (element.getOptions().button.icon) {
-          i(class="#{element.getOptions().button.icon}")
-        - }
-        - if (element.getOptions().button.text) {
-          span #{element.getOptions().button.text}
-        - }
-        input(type="file", id="#{element.getId()}-file", name="#{element.getName()}-file")
+    div.input-group
+        ul.form-control.no-file
+        span.input-group-btn
+            span.btn.btn-blue.fileinput-button
+                - if (element.getOptions().button.icon) {
+                    i(class="#{element.getOptions().button.icon}")
+                - }
+                - if (element.getOptions().button.text) {
+                    span #{element.getOptions().button.text}
+                - }
+                input(type="file", id="#{element.getId()}-file", name="#{element.getName()}-file")
 
 script(type="text/javascript").
     var initFileUpload_#{element.getId()} = function() {
@@ -42,12 +48,7 @@ script(type="text/javascript").
     
                 if (formControl.find(".media").length < fileUploader.maxFiles)
                     formControl.find(".fileinput-button").removeClass("disabled");
-    
-                if (fileUploader.maxFiles > 1 && element.find("li.media").length > 1)
-                    formControl.sortable("enable");
-                else if (fileUploader.maxFiles > 1)
-                    formControl.sortable("disable");				
-    
+
                 if (!formControl.find("li.media").length)
                 {
                     fileUploader.resetField({
@@ -188,14 +189,16 @@ script(type="text/javascript").
             element.attr("multiple", "multiple");
         
         formControl.sortable({
-            helper: "clone",
-            opacity: 0.8,
-            revert: true,
+            connectWith: "#{element.getConnectWith() ? element.getConnectWith() + ' .ui-sortable' : ''}",
             forceHelperSize: true,
-            placeholder: "draggable-placeholder",
             forcePlaceholderSize: true,
-            connectWith: ".file-uploader .ui-sortable",
+            helper: "clone",
+            items: "li.media",
+            opacity: 0.8,
+            placeholder: "draggable-placeholder",
+            revert: true,
             tolerance: "pointer",
+            zIndex: 99999,
             start: function(event, ui) {
                 ui.item.data("startIndex", ui.item.index());
             },
@@ -221,13 +224,10 @@ script(type="text/javascript").
                 targetFileUploader.resetField({
                     files: targetFiles
                 });
-                
-                console.log("sourceFiles count:", sourceFiles.length);
-                console.log("targetFiles count:", targetFiles.length);
             },
             stop: function( event, ui ) {
                 //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
-                $(ui.item).css('z-index', 'auto');
+                //$(ui.item).css('z-index', 'auto');
             }
         });
                             
@@ -255,7 +255,7 @@ script(type="text/javascript").
                             "fileUpload[mediaSubtype]": "#{element.getOptions().mediaSubtype}",
                             "fileUpload[nonce]": nonce
                         };
-                        console.log(file);
+
                         fileUploader.updateFile({
                             file: file
                         });
@@ -340,10 +340,10 @@ script(type="text/javascript").
         });
         
         container.resize(function() {
-        		var inputGroupBtn = container.find(".input-group > .input-group-btn");
-        		inputGroupBtn.width(inputGroupBtn.children().outerWidth());
+        	var inputGroupBtn = container.find(".input-group > .input-group-btn");
+        	inputGroupBtn.width(inputGroupBtn.children().outerWidth());
         
-        		formControl.outerWidth(container.outerWidth() - inputGroupBtn.outerWidth(), true);
+        	formControl.outerWidth(container.outerWidth() - inputGroupBtn.outerWidth(), true);
       	});
         
         $(document).on("click", "##{element.getId()} .file-remove", function() {
