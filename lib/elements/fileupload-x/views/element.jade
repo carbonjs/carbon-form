@@ -1,6 +1,6 @@
 //-
   @Date:   2018-04-17T15:31:01+02:00
-  @Last modified time: 2018-05-14T13:46:31+02:00
+  @Last modified time: 2018-06-29T10:53:50+02:00
 
 
 
@@ -174,7 +174,7 @@ script(type="text/javascript").
                     var thumbnailPhoto = fileItem.children("img");
     
                     thumbnailPhoto = $("<img class='media-object'>")
-                        .load(function() {
+                        .on("load", function() {
                             imagePreview.replaceWith(thumbnailPhoto);
                         })
                         .attr("src", options.file.previewUrl)
